@@ -10,8 +10,9 @@ before_install:
   - echo 'test'
   # install heroku CLI
   - wget -qO- https://toolbelt.heroku.com/install.sh | sh
-  - heroku login
-  - echo "machine api"
+  - heroku login -i
+  - echo "yangguole@outlook.com"
+  - echo "0649767298+Aa"
   - heroku container:login
 
 script:
