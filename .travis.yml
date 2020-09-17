@@ -1,23 +1,30 @@
+language: python
+python:
+  - "3.8"
 sudo: required
 
-service:
-    - docker
+services:
+  - docker
 
 before_install:
-    - echo 'test'
+  - echo 'test'
+  # install heroku CLI
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+  - heroku login
+  - echo "machine api"
+  - heroku container:login
 
-    - wget -q0- https://toolbelt.heroku/install.sh | sh
-
-    - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
-    
 script:
-    - docker tag guoleyang/mytotoproject registry.hekoku.com/$HEROKU_APP_NAME/web
+  # - docker build -t cisaia/apisimplon:latest . 
+  - docker tag cisaia/apisimplon registry.heroku.com/$HEROKU_APP_NAME/web
 
 deploy:
-    provider: script
-    script:
-        heroku container: push web --app $HEROKU_APP_NAME
-        heroku container: release web --app $HEROKU_APP_NAME
+  provider: script
+  script: 
+    # docker push cisaia/apisimplon;
 
-    on:
-        branch: master
+    # docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+    heroku container:push web --app $HEROKU_APP_NAME
+    heroku container:release web --app $HEROKU_APP_NAME
+  on:
+    branch: master
