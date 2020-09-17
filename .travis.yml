@@ -1,0 +1,23 @@
+sudo: required
+
+service:
+    - docker
+
+before_install:
+    - echo 'test'
+
+    - wget -q0- https://toolbelt.heroku/install.sh | sh
+
+    - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
+    
+script:
+    - docker tag guoleyang/mytotoproject registry.hekoku.com/$HEROKU_APP_NAME/web
+
+deploy:
+    provider: script
+    script:
+        heroku container: push web --app $HEROKU_APP_NAME
+        heroku container: release web --app $HEROKU_APP_NAME
+
+    on:
+        branch: master
